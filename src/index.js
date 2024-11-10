@@ -16,15 +16,9 @@ const btnVolverDetalles = document.querySelector("#detalles-volver-btn");
 const urlSubmit = document.querySelector("#url-submit");
 const urlError = document.querySelector("#url-error");
 const details = detalles.parentElement;
-// const imageContainer = document.querySelector("#image-container");
 const REGEX_URL =
   /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)(:\d+)?(\?[^\s]*)?$/;
 let shortId;
-
-// Crear un nuevo elemento de imagen
-// const imageElement1 = document.createElement("img");
-// imageElement1.src = "./src/img/shots2.webp";
-// imageContainer.appendChild(imageElement1);
 
 urlForm.addEventListener("submit", async (e) => {
   e.preventDefault();
