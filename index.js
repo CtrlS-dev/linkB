@@ -1,6 +1,7 @@
+const mongoose = require("mongoose");
 require("dotenv").config();
 const express = require("express");
-const connectToMongoDB = require("./connect");
+// const connectToMongoDB = require("./connect");
 const URL = require("./models/url");
 const urlRoutes = require("./routes/url");
 const shortId = require("shortid");
@@ -17,9 +18,23 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-connectToMongoDB(process.env.MONGODB_URI).then(() =>
-  console.log("Connected to MongoDB", process.env.MONGODB_URI),
-);
+const connectToMongoDB = async () => {
+  try {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error("MONGODB_URI is not defined in environment variables");
+    }
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error.message);
+  }
+};
+
+connectToMongoDB();
 
 app.use(express.json());
 
@@ -33,6 +48,7 @@ app.get("/:shortId", async (req, res) => {
     { $push: { visitHistory: [{ timestamp: Date.now() }] } },
   );
   const urlRedirect = entry.redirectUrl;
+
   if (entry) {
     const urlRedirectHttps = /^http/.test(urlRedirect)
       ? urlRedirect.replace(/^http:/, "https:")

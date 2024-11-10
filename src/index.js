@@ -1,3 +1,4 @@
+const urlErrorServer = document.querySelector("#url-error-server");
 const arrowDown = document.querySelector("#arrow-down");
 const app = document.querySelector("#app");
 const instructions = document.querySelector("#instructions");
@@ -20,46 +21,60 @@ const REGEX_URL =
   /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)(:\d+)?(\?[^\s]*)?$/;
 let shortId;
 
+const preload = document.querySelector("#preload");
+preload.classList.add("hidden");
+preload.classList.remove("flex");
+
 urlForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const url = urlInput.value;
+  const isValid = REGEX_URL.test(url); // Verifica la URL al inicio
 
-  app.classList.add("animate__animated", "animate__fadeOut", "animate__slow");
+  // Mostrar error si la URL es inválida
+  if (!isValid) {
+    console.error("Invalid URL format");
+    urlInput.classList.add("border-red-500");
+    return;
+  }
 
   try {
+    // Muestra el preload mientras se procesa la solicitud
+    preload.classList.remove("hidden");
+    preload.classList.add("flex");
+    // Envía la URL al servidor para obtener el shortId
     const response = await axios.post("http://localhost:3000/url", { url });
-    const isValid = new RegExp(REGEX_URL).test(urlInput.value);
+    shortId = response.data.id;
 
-    if (isValid) {
-      shortId = response.data.id;
-      // animacion para subir form
-      app.classList.remove("animate__fadeOut", "animate__slow");
-      app.classList.add("animate__fadeIn", "animate__medium");
-      // reseteo de input
-      urlForm.reset();
-      urlSubmit.disabled = true;
-      urlSubmit.classList.add("bg-gray-400");
-      urlSubmit.classList.remove("bg-blue-500", "hover:bg-blue-700");
-      // mostrar resultados
-      divResult.classList.remove("hidden");
-      divResult.classList.add("flex", "flex-col");
-      const urlOriginal = document.querySelector("#url-original");
-      const linkOriginal = urlOriginal.children[1];
-      linkOriginal.textContent = `${url}`;
-      if (url.includes("https://") || url.includes("http://")) {
-        linkOriginal.href = `${url}`;
-      } else {
-        linkOriginal.href = `https://${url}`;
-      }
-      const linkShort = urlShort.children[1];
-      linkShort.textContent = `http://localhost:3000/${response.data.id}`;
-      linkShort.href = `http://localhost:3000/${response.data.id}`;
-    } else {
-      console.error("Error saving URL:", response.statusText);
-    }
+    // Cambiar animación y restablecer el formulario
+    app.classList.remove("animate__fadeOut", "animate__slow");
+    app.classList.add("animate__fadeIn", "animate__medium");
+    urlForm.reset();
+    urlSubmit.disabled = true;
+    urlSubmit.classList.add("bg-gray-400");
+    urlSubmit.classList.remove("bg-blue-500", "hover:bg-blue-700");
+
+    // Mostrar resultados
+    divResult.classList.remove("hidden");
+    divResult.classList.add("flex", "flex-col");
+
+    // Configura el enlace original
+    const urlOriginal = document.querySelector("#url-original").children[1];
+    urlOriginal.textContent = url;
+    urlOriginal.href = url.startsWith("http") ? url : `https://${url}`;
+
+    // Configura el enlace corto
+    const linkShort = urlShort.children[1];
+    linkShort.textContent = `http://localhost:3000/${shortId}`;
+    linkShort.href = `http://localhost:3000/${shortId}`;
   } catch (error) {
     console.error("Error saving URL:", error.message);
+    urlErrorServer.classList.remove("hidden");
+    urlErrorServer.classList.add("flex");
+    urlErrorServer.textContent = `Error saving URL: ${error.message}`;
+  } finally {
+    // Oculta el preload después de que se completa la solicitud
+    preload.classList.add("hidden");
   }
 });
 

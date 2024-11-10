@@ -55,7 +55,7 @@
 
     <!-- notificaciones -->
     <div
-      class="fixed z-[60] m-4 hidden h-16 w-full items-center justify-center"
+      class="fixed top-8 z-[60] m-4 hidden h-16 w-full items-center justify-center"
     >
       <div
         id="notification"
@@ -85,7 +85,7 @@
 
     <!-- App -->
     <div id="app" class="mx-8 h-screen">
-      <div class="flex h-full w-full flex-col items-center justify-center">
+      <div class="flex w-full flex-col items-center justify-center pt-52">
         <!-- titulo -->
         <h1
           class="animate__animated animate__fadeInUp animate__fast relative cursor-default text-center text-4xl font-black text-gray-800 md:text-6xl"
@@ -137,7 +137,26 @@
             </svg>
           </button>
         </form>
+        <!-- preload -->
+        <div
+          class="z-40 mt-24 flex h-16 items-center justify-center space-x-2"
+          id="preload"
+        >
+          <span class="sr-only">Loading...</span>
+          <div
+            class="h-8 w-8 animate-bounce rounded-full bg-violet-300 [animation-delay:-0.3s]"
+          ></div>
+          <div
+            class="h-8 w-8 animate-bounce rounded-full bg-violet-400 [animation-delay:-0.15s]"
+          ></div>
+          <div class="h-8 w-8 animate-bounce rounded-full bg-violet-500"></div>
+        </div>
         <!-- errores de input -->
+        <div
+          class="animate__animated animate__shakeX animate__fast mt-4 hidden text-center text-xl font-semibold text-red-900 md:text-2xl"
+          id="url-error-server"
+        ></div>
+
         <div
           class="animate__animated animate__fadeIn animate__fast mt-4 hidden text-center font-semibold text-red-900 md:text-xl"
           id="url-error"
@@ -279,11 +298,13 @@
       <div
         class="h-full w-full rounded-3xl bg-slate-600/20 p-7 shadow-2xl md:max-w-[70rem]"
       >
-        <h1 class="mb-6 text-center text-3xl font-extrabold text-[#444d55]">
+        <h1
+          class="mb-6 text-center text-2xl font-extrabold text-[#444d55] md:text-3xl"
+        >
           Documentación
         </h1>
         <div class="gap-4">
-          <h2 class="text-xl font-medium text-[#32383f]">
+          <h2 class="text-md font-medium text-[#32383f] md:text-xl">
             Esta aplicación es un proyecto de aplicación web. La aplicación
             permite a los usuarios ingresar URLs y obtener una versión acortada
             de la misma.
@@ -291,11 +312,11 @@
         </div>
         <div class="gap-4">
           <h1
-            class="mb-4 mt-5 text-2xl font-extrabold text-[#444d55] underline underline-offset-2"
+            class="mb-4 mt-5 text-lg font-extrabold text-[#444d55] underline underline-offset-2 md:text-2xl"
           >
             Funcionalidad:
           </h1>
-          <div class="text-xl font-semibold text-[#32383f]">
+          <div class="text-sm font-semibold text-[#32383f] md:text-xl">
             <h2 class="font-bold">• Ingreso de URL:</h2>
             <h3>
               El usuario puede ingresar una URL en el formulario de la página
