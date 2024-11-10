@@ -25,7 +25,6 @@ const connectToMongoDB = async () => {
       throw new Error("MONGODB_URI is not defined in environment variables");
     }
     await mongoose.connect(uri, {
-      useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("Connected to MongoDB");
