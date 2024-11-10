@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Nunito, sans-serif;
+}
+
+.status-ind {
+  width: 0.625em;
+  height: 0.625em;
+  background-color: #9b9b9b;
+  margin: 0.375em 0;
+  border-radius: 0.5em;
+}
+
+.status-ind-g {
+  width: 0.625em;
+  height: 0.625em;
+  background-color: #9971c1;
+  margin: 0.375em 0;
+  border-radius: 0.5em;
+}
+
+#notification {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+#detalles {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background-color: rgba(206, 100, 255, 0.082);
+}
+
+#navbar {
+  -webkit-backdrop-filter: blur(34px);
+  backdrop-filter: blur(34px);
+  background-color: rgba(206, 100, 255, 0.082);
+}

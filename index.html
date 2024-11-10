@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Link Breaker ⛓️‍💥</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <!-- BG -->
+    <div class="fixed top-0 -z-10 h-full w-full bg-[#f1f1f1a8]">
+      <div
+        class="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(172,109,244,0.8)] opacity-50 blur-[80px]"
+      ></div>
+    </div>
+
+    <!-- detalles -->
+    <div class="fixed z-50 hidden h-full w-full">
+      <div
+        id="detalles"
+        class="animate__animated animate__fadeIn flex h-screen w-full items-center justify-center"
+      >
+        <div
+          class="flex h-64 w-64 flex-col items-center justify-center gap-2 rounded-xl bg-white p-8 shadow-lg"
+        >
+          <div
+            class="flex h-full w-full flex-col items-center justify-between text-center"
+          >
+            <h1 class="cursor-default text-xl font-bold text-violet-800">
+              Clicks en el enlace
+            </h1>
+            <h1 class="text-5xl font-black" id="detalles-clicks"></h1>
+            <button
+              class="flex h-10 w-40 items-center justify-center rounded-full bg-[#f6f6f6] p-2 shadow-xl ring-1 duration-500 ease-in-out hover:bg-[#dfd1f0]"
+              id="detalles-volver-btn"
+            >
+              Volver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- notificaciones -->
+    <div
+      class="fixed z-[60] m-4 hidden h-16 w-full items-center justify-center"
+    >
+      <div
+        id="notification"
+        class="animate__animated animate__fadeInDown flex h-full w-64 rounded-[2rem] bg-white/40 shadow-xl"
+      >
+        <div class="flex h-16 w-full items-center justify-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="size-8 text-violet-800"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"
+            />
+          </svg>
+          <h1 class="flex cursor-default text-xl font-semibold text-violet-800">
+            Enlace copiado
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- App -->
+    <div id="app" class="mx-8 h-screen">
+      <div class="flex h-full w-full flex-col items-center justify-center">
+        <!-- titulo -->
+        <h1
+          class="animate__animated animate__fadeInUp animate__fast relative cursor-default text-center text-4xl font-black text-gray-800 md:text-6xl"
+        >
+          Link Breaker ⛓️‍💥
+        </h1>
+        <!-- input y boton -->
+        <form
+          action="submit"
+          id="url-form"
+          class="shadow-black-700/40 flex w-full items-center justify-center gap-2 drop-shadow-lg md:w-[30rem] lg:w-[40rem]"
+        >
+          <input
+            type="text"
+            name="url"
+            id="url-input"
+            autofocus
+            class="animate__animated animate__fadeIn animate__fast z-20 mt-4 h-14 w-7/12 rounded-[2rem] border border-gray-400 p-4 font-normal outline-none duration-1000 ease-in-out hover:w-[85%] focus:w-[85%] focus:shadow-xl focus:shadow-[#d8bff579] md:h-16"
+            placeholder="https://ejemplo.com"
+          />
+          <button
+            type="submit"
+            id="url-submit"
+            disabled
+            title="Cortar enlace"
+            class="animate__animated animate__fadeIn animate__fast z-10 mt-4 flex h-14 w-16 cursor-not-allowed items-center justify-center rounded-full bg-gray-400 font-semibold text-white outline-8 outline-white duration-500 ease-in-out hover:text-white focus:outline-black/60 md:h-16"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x-bind:width="size"
+              x-bind:height="size"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              x-bind:stroke-width="stroke"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="24"
+              height="24"
+              stroke-width="2"
+            >
+              <path d="M9 15l6 -6"></path>
+              <path
+                d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"
+              ></path>
+              <path
+                d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"
+              ></path>
+            </svg>
+          </button>
+        </form>
+        <!-- errores de input -->
+        <div
+          class="animate__animated animate__fadeIn animate__fast mt-4 hidden text-center font-semibold text-red-900 md:text-xl"
+          id="url-error"
+        >
+          Ingresa un link válido.
+          <div>
+            Ejemplos: <span class="text-blue-800">https://link.com, </span>
+            <span class="text-blue-800">www.link.com, </span
+            ><span class="text-blue-800">link.com</span>
+          </div>
+        </div>
+        <!-- result url -->
+        <div
+          id="url-result"
+          class="animate__animated animate__fadeInDown mt-4 hidden h-auto min-h-14 w-full flex-col justify-center overflow-auto rounded-[1.5rem] bg-white p-4 shadow-xl md:w-[30rem] lg:w-[40rem]"
+        >
+          <div
+            id="url-result-span"
+            class="flex transform flex-col gap-2 transition duration-500 ease-in-out"
+          >
+            <!-- titulo -->
+            <h4 class="text-xl font-extrabold text-black/85">Link Original:</h4>
+            <!-- links -->
+            <div id="url-original" class="flex gap-2">
+              <!-- punto de viñeta -->
+              <span class="status-ind fixed w-2.5"></span>
+              <!-- enlace original -->
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ml-4 w-full break-words font-semibold text-gray-800 underline hover:text-gray-500"
+                title="Abrir enlace en nueva pestaña"
+              >
+              </a>
+            </div>
+            <!-- titulo -->
+            <h4 class="mt-4 text-xl font-extrabold text-black/85">
+              Link Breaker ⛓️‍💥:
+            </h4>
+            <div id="url-short" class="flex gap-2">
+              <!-- punto de viñeta -->
+              <span class="status-ind-g fixed w-2.5"></span>
+              <!-- enlace cortado -->
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ml-4 w-full break-words font-semibold text-blue-800 underline hover:text-blue-500"
+                title="Abrir enlace en nueva pestaña"
+              >
+              </a>
+            </div>
+            <div class="align-center flex w-full justify-center gap-2">
+              <!-- Button copiar -->
+              <button
+                id="copy-btn"
+                type="button"
+                title="Copiar enlace cortado"
+                class="flex h-10 w-40 items-center justify-center rounded-full bg-[#f6f6f6] p-2 shadow-xl duration-500 ease-in-out hover:bg-[#dfd1f0]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="28"
+                  height="28"
+                  stroke-width="2"
+                  class="cursor-pointer text-blue-700"
+                >
+                  <path
+                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"
+                  ></path>
+                  <path
+                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+                  ></path>
+                </svg>
+                <h3 class="font-semibold">Copiar</h3>
+              </button>
+              <!-- Boton detalles -->
+              <button
+                id="details-btn"
+                type="button"
+                title="Ver detalles"
+                class="flex h-10 w-40 items-center justify-center rounded-full bg-[#f6f6f6] p-2 shadow-xl duration-500 ease-in-out hover:bg-[#d6d6d6]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-8 cursor-pointer text-blue-700"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+                <h3 class="font-semibold">Detalles</h3>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Down Arrow -->
+    <div
+      id="arrow-down"
+      class="animate__animated animate__fadeIn animate__medium sticky bottom-0 z-20 flex cursor-pointer items-center justify-center"
+    >
+      <div
+        class="position-absolute bottom-0 right-0 mb-4 mr-4 flex h-10 w-40 animate-bounce items-center justify-center gap-2 rounded-full bg-white p-2 font-bold shadow-lg ring-1 ring-slate-900/5"
+      >
+        <svg
+          class="h-6 w-6 text-violet-500"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+        <span>Documentación</span>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+
+    <div
+      class="flex flex-col items-center justify-center p-12 pb-0"
+      id="instructions"
+    >
+      <div
+        class="h-full w-full rounded-3xl bg-slate-600/20 p-7 shadow-2xl md:max-w-[70rem]"
+      >
+        <h1 class="mb-6 text-center text-3xl font-extrabold text-[#444d55]">
+          Documentación
+        </h1>
+        <div class="gap-4">
+          <h2 class="text-xl font-medium text-[#32383f]">
+            Esta aplicación es un proyecto de aplicación web. La aplicación
+            permite a los usuarios ingresar URLs y obtener una versión acortada
+            de la misma.
+          </h2>
+        </div>
+        <div class="gap-4">
+          <h1
+            class="mb-4 mt-5 text-2xl font-extrabold text-[#444d55] underline underline-offset-2"
+          >
+            Funcionalidad:
+          </h1>
+          <div class="text-xl font-semibold text-[#32383f]">
+            <h2 class="font-bold">• Ingreso de URL:</h2>
+            <h3>
+              El usuario puede ingresar una URL en el formulario de la página
+              principal
+            </h3>
+            <br />
+
+            <h2 class="font-bold">• Comprobación de datos:</h2>
+            <h3>
+              La aplicación es capaz de identificar si la URL ingresada es
+              válida
+            </h3>
+            <br />
+
+            <h2 class="font-bold">• Normalización de URL:</h2>
+            <h3>
+              La aplicación agrega <span class="font-bold">"http://"</span> o
+              <span class="font-bold">"https://"</span> al inicio de la URL si
+              es necesario para que funcione correctamente
+            </h3>
+            <br />
+
+            <h2 class="font-bold">• Acortamiento de URL:</h2>
+            <h3>
+              La aplicación acorta la URL ingresada y la muestra en la página
+              principal.
+            </h3>
+            <br />
+            <h2 class="font-bold">• Redirección a la URL original:</h2>
+            <h3>
+              Al hacer clic en la URL acortada, el usuario es redirigido a la
+              URL original.
+            </h3>
+          </div>
+        </div>
+      </div>
+      <!-- Up Arrow -->
+      <div
+        id="arrow-up"
+        class="animate__animated animate__fadeIn animate__medium sticky bottom-0 flex cursor-pointer items-center justify-center"
+      >
+        <div
+          class="position-absolute bottom-0 right-0 mb-4 mr-4 flex h-10 w-40 animate-bounce items-center justify-center gap-2 rounded-full bg-white p-2 font-bold shadow-lg ring-1 ring-slate-900/5"
+          bis_skin_checked="1"
+        >
+          <svg
+            class="h-6 w-6 rotate-180 text-violet-500"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+          <span class="">Volver</span>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="/src/index.js"></script>
+</html>
