@@ -7,7 +7,7 @@ const urlRoutes = require("./routes/url");
 const shortId = require("shortid");
 const app = express();
 const cors = require("cors");
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 // Configuración de CORS
 const corsOptions = {
