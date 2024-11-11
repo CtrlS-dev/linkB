@@ -39,8 +39,8 @@ app.use(express.json());
 app.use("/url", urlRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the URL shortener API");
-  console.log("Welcome to the URL shortener API");
+  res.send("Welcome to the URL");
+  console.log("Welcome to the URL");
 });
 
 app.get("/:shortId", async (req, res) => {
