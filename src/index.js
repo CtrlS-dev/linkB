@@ -43,7 +43,7 @@ urlForm.addEventListener("submit", async (e) => {
     preload.classList.remove("hidden");
     preload.classList.add("flex");
     // Envía la URL al servidor para obtener el shortId
-    const response = await axios.post("http://localhost:3000/url", { url });
+    const response = await axios.post("/url", { url });
     shortId = response.data.id;
 
     // Cambiar animación y restablecer el formulario
