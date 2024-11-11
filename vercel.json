@@ -16,8 +16,10 @@
       "dest": "/index.html"
     }
   ],
-  "env": {
-    "MONGODB_URI": "@your-mongodb-uri",
-    "PORT": "3000"
-  }
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
