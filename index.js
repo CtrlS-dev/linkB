@@ -11,7 +11,7 @@ const PORT = process.env.PORT;
 
 // Configuración de CORS
 const corsOptions = {
-  origin: "http://127.0.0.1:5500",
+  origin: "https://lbreaker.vercel.app/",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 };
