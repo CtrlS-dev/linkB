@@ -10,8 +10,5 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/src/index.html" },
-    { "src": "/(.*)", "dest": "/index.js" }
-  ]
+  "routes": [{ "src": "/(.*)", "dest": "/src/index.html" }]
 }
