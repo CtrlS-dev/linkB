@@ -18,7 +18,7 @@ const urlSubmit = document.querySelector("#url-submit");
 const urlError = document.querySelector("#url-error");
 const details = detalles.parentElement;
 const REGEX_URL =
-  /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)(:\d+)?(\?[^\s]*)?$/;
+  "/^(https?://)?(www.)?[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)(:d+)?(?[^s]*)?$/";
 let shortId;
 
 const preload = document.querySelector("#preload");
