@@ -43,7 +43,7 @@ urlForm.addEventListener("submit", async (e) => {
     preload.classList.remove("hidden");
     preload.classList.add("flex");
     // Envía la URL al servidor para obtener el shortId
-    const response = await axios.post("/", { url });
+    const response = await axios.post("https://lbreaker.vercel.app/", { url });
     shortId = response.data.id;
 
     // Cambiar animación y restablecer el formulario
