@@ -38,6 +38,11 @@ app.use(express.json());
 // Rutas
 app.use("/url", urlRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the URL shortener API");
+  console.log("Welcome to the URL shortener API");
+});
+
 app.get("/:shortId", async (req, res) => {
   const shortIdParams = req.params.shortId;
   const entry = await URL.findOneAndUpdate(
